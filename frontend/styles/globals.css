@@ -1,0 +1,1112 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   CSS Custom Properties - Light/Dark Mode
+   ======================================== */
+:root {
+    /* 2026 Luxury Chromatic Profile - Light Mode */
+    --pearl-white: #FCFBF4;
+    --vermilion-red: #E34234;
+    --vermilion-hover: #D03527;
+    --antique-gold: #B59410;
+    --deep-teal: #008080;
+
+    /* Dynamic theme properties */
+    --bg-primary: #FCFBF4;
+    --bg-secondary: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-glass: rgba(255, 255, 255, 0.7);
+    --text-primary: #1F1F1F;
+    --text-secondary: #6B7280;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
+    /* Legacy compatibility */
+    --primary-red: #E34234;
+    --primary-hover: #D03527;
+    --accent-gold: #B59410;
+    --bg-page: #FCFBF4;
+    --border-light: #E5E7EB;
+}
+
+/* Dark Mode - Royal Night Theme (2026 Standards) */
+/* Avoiding the "Black Trap" - using Cod Gray (#121212) instead of pure black */
+.dark {
+    --pearl-white: #121212;
+    --bg-primary: #121212;
+    --bg-secondary: #1A1A1A;
+    --bg-tertiary: #242424;
+    --bg-card: rgba(30, 30, 30, 0.9);
+    --bg-card-elevated: rgba(42, 42, 42, 0.95);
+    --bg-glass: rgba(30, 30, 30, 0.7);
+    /* Dialed-down off-white for reduced eye strain */
+    --text-primary: #E8E8E8;
+    --text-secondary: #A0A0A0;
+    --text-muted: #707070;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-elevated: rgba(255, 255, 255, 0.12);
+    --shadow-color: rgba(0, 0, 0, 0.6);
+    --bg-page: #121212;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.5s ease, color 0.3s ease;
+}
+
+@layer base {
+    html {
+        font-family: 'Inter', system-ui, sans-serif;
+        scroll-behavior: smooth;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    button, a {
+        min-height: 48px;
+        min-width: 48px;
+    }
+
+    a.inline-link {
+        min-height: auto;
+        min-width: auto;
+    }
+}
+
+@layer components {
+    /* Primary CTA Button - Vermilion */
+    .btn-primary,
+    .primary-btn {
+        @apply bg-vermilion hover:bg-vermilion-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300;
+        min-height: 48px;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 40px -10px rgba(227, 66, 52, 0.5);
+    }
+
+    /* Secondary Button - Gold Outline */
+    .btn-secondary {
+        @apply bg-transparent border-2 border-gold text-gold font-semibold py-3 px-6 rounded-xl transition-all duration-300 hover:bg-gold hover:text-white;
+        min-height: 48px;
+    }
+
+    /* ========================================
+       Glassmorphic Card Styles
+       ======================================== */
+    .glass-card {
+        background: var(--bg-glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card:hover {
+        background: var(--bg-glass);
+        backdrop-filter: blur(30px);
+        transform: translateY(-8px);
+        box-shadow:
+            0 25px 50px -12px var(--shadow-color),
+            0 0 0 1px rgba(181, 148, 16, 0.2);
+    }
+
+    .dark .glass-card {
+        background: var(--bg-card);
+        border-color: var(--border-color);
+    }
+
+    .dark .glass-card:hover {
+        background: var(--bg-card-elevated);
+        border-color: var(--border-elevated);
+        box-shadow:
+            0 25px 50px -12px rgba(0, 0, 0, 0.8),
+            0 0 40px rgba(181, 148, 16, 0.12),
+            0 0 0 1px rgba(181, 148, 16, 0.25);
+    }
+
+    /* ========================================
+       Elevation System for Dark Mode
+       Depth hierarchy through tonal layering
+       ======================================== */
+    .dark .elevation-0 {
+        background: var(--bg-primary);
+    }
+
+    .dark .elevation-1 {
+        background: var(--bg-secondary);
+    }
+
+    .dark .elevation-2 {
+        background: var(--bg-tertiary);
+    }
+
+    .dark .elevation-3 {
+        background: var(--bg-card-elevated);
+    }
+
+    /* Card depth classes */
+    .dark .card-elevated {
+        background: var(--bg-card-elevated);
+        border: 1px solid var(--border-elevated);
+    }
+
+    .dark .card-sunken {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+    }
+
+    /* ========================================
+       Radial Spotlight Hover Effect
+       ======================================== */
+    .spotlight-card {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .spotlight-card::before {
+        content: '';
+        position: absolute;
+        top: var(--mouse-y, 50%);
+        left: var(--mouse-x, 50%);
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(
+            circle,
+            rgba(181, 148, 16, 0.15) 0%,
+            transparent 70%
+        );
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .spotlight-card:hover::before {
+        opacity: 1;
+    }
+
+    .dark .spotlight-card::before {
+        background: radial-gradient(
+            circle,
+            rgba(181, 148, 16, 0.25) 0%,
+            transparent 70%
+        );
+    }
+
+    /* ========================================
+       Bento Grid Styles
+       ======================================== */
+    .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(3, minmax(200px, auto));
+        gap: 24px;
+    }
+
+    .bento-item-large {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    .bento-item-tall {
+        grid-row: span 2;
+    }
+
+    .bento-item-wide {
+        grid-column: span 2;
+    }
+
+    @media (max-width: 1024px) {
+        .bento-grid {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: auto;
+        }
+
+        .bento-item-large,
+        .bento-item-tall,
+        .bento-item-wide {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .bento-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ========================================
+       Micro-Animations
+       ======================================== */
+    .haptic-click {
+        transition: transform 0.1s ease;
+    }
+
+    .haptic-click:active {
+        transform: scale(0.95);
+    }
+
+    .success-pulse {
+        animation: successPulse 0.6s ease-out;
+    }
+
+    @keyframes successPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); box-shadow: 0 0 0 4px rgba(181, 148, 16, 0.3); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(181, 148, 16, 0); }
+    }
+
+    .add-to-cart-success {
+        animation: cartSuccess 0.5s ease-out;
+    }
+
+    @keyframes cartSuccess {
+        0% { transform: scale(1); }
+        25% { transform: scale(0.9); }
+        50% { transform: scale(1.1); }
+        75% { transform: scale(0.95); }
+        100% { transform: scale(1); }
+    }
+
+    /* Satisfying bounce on favorite */
+    .heart-bounce {
+        animation: heartBounce 0.4s ease-out;
+    }
+
+    @keyframes heartBounce {
+        0% { transform: scale(1); }
+        30% { transform: scale(1.3); }
+        60% { transform: scale(0.9); }
+        100% { transform: scale(1); }
+    }
+
+    /* ========================================
+       Parallax Effects
+       ======================================== */
+    .parallax-section {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .parallax-bg {
+        position: absolute;
+        inset: -20%;
+        background-size: cover;
+        background-position: center;
+        transition: transform 0.1s ease-out;
+        will-change: transform;
+    }
+
+    .parallax-content {
+        position: relative;
+        z-index: 10;
+    }
+
+    /* Texture Parallax Layer */
+    .texture-layer {
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B59410' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    .dark .texture-layer {
+        opacity: 0.2;
+    }
+
+    /* ========================================
+       Theme Toggle Button
+       ======================================== */
+    .theme-toggle {
+        position: relative;
+        width: 52px;
+        height: 28px;
+        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        border-radius: 28px;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        border: none;
+        padding: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .theme-toggle.dark {
+        background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+    }
+
+    .theme-toggle-handle {
+        position: absolute;
+        top: 50%;
+        left: 4px;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .theme-toggle.dark .theme-toggle-handle {
+        left: auto;
+        right: 4px;
+        transform: translateY(-50%);
+        background: #1F1F1F;
+    }
+
+    /* ========================================
+       Scrollytelling Styles
+       ======================================== */
+    .scroll-reveal {
+        opacity: 0;
+        transform: translateY(60px);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .scroll-reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .scroll-reveal-left {
+        opacity: 0;
+        transform: translateX(-60px);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .scroll-reveal-left.visible {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .scroll-reveal-right {
+        opacity: 0;
+        transform: translateX(60px);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .scroll-reveal-right.visible {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* ========================================
+       Dark Mode Specific Styles
+       Using softer grays for reduced eye strain
+       ======================================== */
+    .dark .navbar {
+        background: rgba(18, 18, 18, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(181, 148, 16, 0.15);
+    }
+
+    .dark .bg-pearl,
+    .dark .bg-pearl-50,
+    .dark .bg-pearl-100,
+    .dark .bg-pearl-200 {
+        background-color: var(--bg-primary) !important;
+    }
+
+    .dark .bg-white {
+        background-color: var(--bg-secondary) !important;
+    }
+
+    /* Use softer off-white for primary text */
+    .dark .text-gray-900,
+    .dark .text-brown-900 {
+        color: var(--text-primary) !important;
+    }
+
+    /* Muted secondary text for reduced contrast */
+    .dark .text-gray-600,
+    .dark .text-gray-500,
+    .dark .text-brown-600 {
+        color: var(--text-secondary) !important;
+    }
+
+    .dark .text-gray-400 {
+        color: var(--text-muted) !important;
+    }
+
+    .dark .border-gray-100,
+    .dark .border-gray-200,
+    .dark .border-cream-200 {
+        border-color: var(--border-color) !important;
+    }
+
+    /* Softer gray backgrounds using elevation system */
+    .dark .bg-gray-900 {
+        background-color: var(--bg-primary) !important;
+    }
+
+    .dark .bg-gray-800 {
+        background-color: var(--bg-secondary) !important;
+    }
+
+    .dark .bg-gray-700 {
+        background-color: var(--bg-tertiary) !important;
+    }
+
+    /* Gold accent glow in dark mode */
+    .dark .text-gold,
+    .dark .text-accent-gold {
+        text-shadow: 0 0 30px rgba(181, 148, 16, 0.3);
+    }
+
+    /* Vermilion glow in dark mode */
+    .dark .text-vermilion {
+        text-shadow: 0 0 30px rgba(227, 66, 52, 0.3);
+    }
+
+    .dark .bg-cream-50,
+    .dark .bg-cream-100 {
+        background-color: rgba(26, 26, 36, 0.5) !important;
+    }
+
+    /* Dark mode card enhancements */
+    .dark .product-card,
+    .dark .card {
+        background: rgba(26, 26, 36, 0.8);
+        border: 1px solid rgba(181, 148, 16, 0.15);
+    }
+
+    .dark .product-card:hover,
+    .dark .card:hover {
+        border-color: rgba(181, 148, 16, 0.3);
+        box-shadow:
+            0 25px 50px -12px rgba(0, 0, 0, 0.7),
+            0 0 60px rgba(181, 148, 16, 0.1);
+    }
+
+    /* Input styling */
+    .input {
+        @apply border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-vermilion focus:border-transparent bg-white transition-all duration-200;
+    }
+
+    .dark .input {
+        background: rgba(26, 26, 36, 0.8);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+    }
+
+    /* Gold heading accent */
+    .heading-gold {
+        color: var(--antique-gold);
+        font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    /* Shimmer effect for loading states */
+    .shimmer {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite;
+    }
+
+    .dark .shimmer {
+        background: linear-gradient(90deg, #1a1a24 25%, #252530 50%, #1a1a24 75%);
+        background-size: 200% 100%;
+    }
+}
+
+/* ========================================
+   3D Circular Slider Styles (Scoped)
+   ======================================== */
+
+.slider-3d-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    padding: 60px 20px;
+    background: var(--bg-primary);
+    transition: background-color 0.5s ease;
+}
+
+.slider-3d-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.slider-3d-subtitle {
+    color: var(--vermilion-red);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+}
+
+.slider-3d-title {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 900;
+    color: var(--text-primary);
+    line-height: 1.1;
+    font-family: 'Playfair Display', Georgia, serif;
+}
+
+.slider-3d-container {
+    perspective: 1500px;
+    perspective-origin: 50% 50%;
+    cursor: grab;
+    width: 100%;
+    max-width: 1400px;
+    overflow: hidden;
+}
+
+.slider-3d-container.dragging {
+    cursor: grabbing;
+}
+
+.slider-3d-track {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transform-style: preserve-3d;
+}
+
+.slider-3d-card {
+    flex-shrink: 0;
+    width: 240px;
+    background: var(--bg-card);
+    overflow: hidden;
+    transform-style: preserve-3d;
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.slider-3d-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,
+            rgba(0, 0, 0, 0.15),
+            transparent 30%,
+            transparent 70%,
+            rgba(0, 0, 0, 0.15));
+    transform: translateZ(-8px);
+    pointer-events: none;
+}
+
+.slider-3d-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #e0e0e0;
+    transform: translateZ(-16px);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.dark .slider-3d-card::after {
+    background: #1a1a24;
+}
+
+.slider-3d-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+    position: relative;
+    z-index: 1;
+}
+
+.slider-3d-hover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.slider-3d-card:hover .slider-3d-hover-overlay {
+    opacity: 1;
+}
+
+.slider-3d-hover-overlay span {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.slider-3d-track.blurred .slider-3d-card:not(.expanded) {
+    filter: blur(8px);
+    transition: filter 0.6s ease;
+}
+
+.slider-3d-card.expanded {
+    z-index: 1000 !important;
+}
+
+.slider-3d-card-info {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+    z-index: 1001;
+    max-width: 600px;
+    padding: 1.5rem 2rem;
+    background: var(--vermilion-red);
+    box-shadow: 4px 3px 18px 4px rgba(183, 183, 183, 0.13);
+    min-width: 320px;
+    border-radius: 12px;
+}
+
+.slider-3d-card-info.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.slider-3d-card-info h2 {
+    font-size: 28px;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 12px;
+    font-family: 'Playfair Display', Georgia, serif;
+}
+
+.slider-3d-card-info p {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.slider-3d-view-btn {
+    display: inline-block;
+    padding: 10px 24px;
+    background: white;
+    color: var(--vermilion-red);
+    font-weight: 700;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.slider-3d-view-btn:hover {
+    background: var(--antique-gold);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.slider-3d-close-btn {
+    position: fixed;
+    top: 100px;
+    right: 40px;
+    width: 60px;
+    height: 60px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1002;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.slider-3d-close-btn.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.slider-3d-close-btn:hover {
+    background: var(--vermilion-red);
+    color: white;
+    transform: rotate(90deg) scale(1.1);
+}
+
+.slider-3d-close-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.slider-3d-clone {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Mobile Responsiveness for 3D Slider */
+@media (max-width: 768px) {
+    .slider-3d-section {
+        padding: 40px 10px;
+    }
+
+    .slider-3d-header {
+        margin-bottom: 40px;
+    }
+
+    .slider-3d-card {
+        width: 180px;
+    }
+
+    .slider-3d-card-info {
+        min-width: 280px;
+        bottom: 60px;
+        padding: 1rem 1.5rem;
+    }
+
+    .slider-3d-card-info h2 {
+        font-size: 22px;
+    }
+
+    .slider-3d-card-info p {
+        font-size: 14px;
+    }
+
+    .slider-3d-close-btn {
+        top: 80px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* Parallax Hero Styles */
+.hero-parallax {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-parallax::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(252, 251, 244, 0.95) 0%, rgba(252, 251, 244, 0.8) 50%, rgba(252, 251, 244, 0.6) 100%);
+    z-index: 1;
+}
+
+.dark .hero-parallax::before {
+    background: linear-gradient(135deg, rgba(10, 10, 15, 0.95) 0%, rgba(10, 10, 15, 0.85) 50%, rgba(10, 10, 15, 0.75) 100%);
+}
+
+.hero-parallax .hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Floating animation for decorative elements */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(3deg);
+    }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: 2s;
+}
+
+/* Product card video hover effect */
+.product-card-video {
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.product-card:hover .product-card-video {
+    opacity: 1;
+}
+
+/* Newsletter section teal theme */
+.newsletter-teal {
+    background: linear-gradient(135deg, #008080 0%, #006666 100%);
+}
+
+/* Footer teal theme */
+.footer-teal {
+    background: linear-gradient(180deg, #006666 0%, #004d4d 100%);
+}
+
+/* ========================================
+   Luxury Gradient Overlays
+   ======================================== */
+.luxury-gradient {
+    background: linear-gradient(
+        135deg,
+        rgba(181, 148, 16, 0.1) 0%,
+        transparent 50%,
+        rgba(227, 66, 52, 0.1) 100%
+    );
+}
+
+.dark .luxury-gradient {
+    background: linear-gradient(
+        135deg,
+        rgba(181, 148, 16, 0.15) 0%,
+        transparent 50%,
+        rgba(227, 66, 52, 0.15) 100%
+    );
+}
+
+/* Gold shimmer text effect */
+.gold-shimmer {
+    background: linear-gradient(
+        90deg,
+        #B59410 0%,
+        #D4B14B 25%,
+        #B59410 50%,
+        #D4B14B 75%,
+        #B59410 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: goldShimmer 3s linear infinite;
+}
+
+@keyframes goldShimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* ========================================
+   Scrollbar Styling
+   ======================================== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--antique-gold);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #9A7A0D;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #1A1A1A;
+}
+
+/* Hide scrollbar for bento grid horizontal scroll on mobile */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* ========================================
+   Section Transitions - Smooth Gradients
+   Prevents abrupt light-to-dark transitions
+   ======================================== */
+.section-transition-dark {
+    position: relative;
+}
+
+.section-transition-dark::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--bg-primary));
+    pointer-events: none;
+    z-index: 1;
+}
+
+.section-transition-light {
+    position: relative;
+}
+
+.section-transition-light::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--pearl-white));
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Parallax depth layer transition */
+.parallax-transition {
+    position: relative;
+    overflow: hidden;
+}
+
+.parallax-transition::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(
+        180deg,
+        var(--pearl-white) 0%,
+        rgba(252, 251, 244, 0.8) 30%,
+        rgba(252, 251, 244, 0) 100%
+    );
+    pointer-events: none;
+    z-index: 2;
+}
+
+.dark .parallax-transition::before {
+    background: linear-gradient(
+        180deg,
+        #121212 0%,
+        rgba(18, 18, 18, 0.8) 30%,
+        rgba(18, 18, 18, 0) 100%
+    );
+}
+
+/* ========================================
+   Accessibility - Improved Contrast Ratios
+   WCAG 4.5:1 compliant text colors
+   ======================================== */
+/* Gold on dark backgrounds - enhanced contrast */
+.dark .text-gold,
+.dark .text-accent-gold {
+    color: #D4B14B; /* Lighter gold for better contrast on dark */
+    text-shadow: 0 0 20px rgba(181, 148, 16, 0.25);
+}
+
+/* Ensure body text meets WCAG standards */
+.dark .text-body {
+    color: #C8C8C8; /* Passes 4.5:1 on #121212 */
+}
+
+/* High contrast mode for accessibility */
+@media (prefers-contrast: high) {
+    .dark {
+        --text-primary: #FFFFFF;
+        --text-secondary: #D0D0D0;
+        --border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .dark .text-gold {
+        color: #FFD700;
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .glass-card,
+    .glass-card:hover,
+    .haptic-click,
+    .scroll-reveal,
+    .parallax-bg {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+    }
+}
+
+/* ========================================
+   CTA Button Glow Effects
+   High luminance for visibility
+   ======================================== */
+.cta-glow {
+    position: relative;
+    overflow: visible;
+}
+
+.cta-glow::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    background: linear-gradient(135deg, var(--antique-gold), var(--vermilion-red));
+    border-radius: inherit;
+    opacity: 0;
+    z-index: -1;
+    filter: blur(12px);
+    transition: opacity 0.3s ease;
+}
+
+.cta-glow:hover::after {
+    opacity: 0.5;
+}
+
+.dark .cta-glow:hover::after {
+    opacity: 0.7;
+}
+
+/* Primary CTA with luminance */
+.btn-primary-glow {
+    @apply bg-gold text-gray-900 font-bold rounded-full;
+    box-shadow: 0 4px 20px rgba(181, 148, 16, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-primary-glow:hover {
+    box-shadow: 0 8px 40px rgba(181, 148, 16, 0.6);
+    transform: translateY(-2px);
+}
+
+.dark .btn-primary-glow {
+    box-shadow: 0 4px 30px rgba(181, 148, 16, 0.5);
+}
+
+.dark .btn-primary-glow:hover {
+    box-shadow: 0 8px 50px rgba(181, 148, 16, 0.7);
+}

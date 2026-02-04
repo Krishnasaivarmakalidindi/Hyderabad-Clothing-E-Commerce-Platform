@@ -1,0 +1,408 @@
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import gsap from 'gsap';
+import Link from 'next/link';
+
+// Product data for Hyderabad Clothing
+const products = [
+    {
+        id: '1',
+        image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&h=800&fit=crop',
+        title: 'Royal Gadwal Saree',
+        desc: 'Handwoven silk masterpiece with pure zari work, showcasing centuries-old weaving traditions of Telangana.'
+    },
+    {
+        id: '2',
+        image: 'https://houseofelegance.in/cdn/shop/products/IkatSilkSaree1.webp?v=1674305111',
+        title: 'Pochampally Ikat',
+        desc: 'Geometric perfection in every thread. UNESCO-recognized craft featuring traditional tie-dye weaving.'
+    },
+    {
+        id: '3',
+        image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=800&fit=crop',
+        title: 'Banarasi Silk Kurta',
+        desc: 'Premium silk kurta with intricate gold thread embroidery, perfect for weddings and festive occasions.'
+    },
+    {
+        id: '4',
+        image: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?w=600&h=800&fit=crop',
+        title: 'Mangalagiri Cotton',
+        desc: 'Lightweight handloom cotton with distinctive nizam border, ideal for the Hyderabad climate.'
+    },
+    {
+        id: '5',
+        image: 'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=600&h=800&fit=crop',
+        title: 'Kalamkari Dupatta',
+        desc: 'Hand-painted artistry depicting mythological tales using natural vegetable dyes.'
+    },
+    {
+        id: '6',
+        image: 'https://5.imimg.com/data5/NE/TT/MY-2412209/wedding-special-grooms-sherwani-wholesale-collection.jpg',
+        title: 'Sherwani Collection',
+        desc: 'Regal menswear featuring Hyderabadi craftsmanship with pearl and zardozi embellishments.'
+    },
+    {
+        id: '7',
+        image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600&h=800&fit=crop',
+        title: 'Narayanpet Saree',
+        desc: 'Traditional cotton saree with temple-inspired borders and rich cultural heritage.'
+    },
+    {
+        id: '8',
+        image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&h=800&fit=crop',
+        title: 'Khadi Kurta Set',
+        desc: 'Sustainable handspun fabric celebrating India\'s freedom movement and artisan heritage.'
+    },
+    {
+        id: '9',
+        image: 'https://assets0.mirraw.com/images/13447633/image_original_zoom.jpeg?1754024412',
+        title: 'Banjara Embroidery',
+        desc: 'Vibrant mirror work and colorful threads showcasing nomadic tribal artistry.'
+    },
+    {
+        id: '10',
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVhPBAvwT77c5nXhk_LPXxCsbtHggjUYJiNw&s',
+        title: 'Dharmavaram Silk',
+        desc: 'Pure mulberry silk with contrast borders, a bridal favorite from Andhra Pradesh.'
+    },
+    {
+        id: '11',
+        image: 'https://images.unsplash.com/photo-1571513722275-4b41940f54b8?w=600&h=800&fit=crop',
+        title: 'Designer Lehenga',
+        desc: 'Contemporary fusion of traditional motifs with modern silhouettes for the new-age bride.'
+    }
+];
+
+// Position configurations for 3D effect
+const positions = [
+    { height: 620, z: 220, rotateY: 48, y: 0, clip: 'polygon(0px 0px, 100% 10%, 100% 90%, 0px 100%)' },
+    { height: 580, z: 165, rotateY: 35, y: 0, clip: 'polygon(0px 0px, 100% 8%, 100% 92%, 0px 100%)' },
+    { height: 495, z: 110, rotateY: 15, y: 0, clip: 'polygon(0px 0px, 100% 7%, 100% 93%, 0px 100%)' },
+    { height: 420, z: 66, rotateY: 15, y: 0, clip: 'polygon(0px 0px, 100% 7%, 100% 93%, 0px 100%)' },
+    { height: 353, z: 46, rotateY: 6, y: 0, clip: 'polygon(0px 0px, 100% 7%, 100% 93%, 0px 100%)' },
+    { height: 310, z: 0, rotateY: 0, y: 0, clip: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' },
+    { height: 353, z: 54, rotateY: 348, y: 0, clip: 'polygon(0px 7%, 100% 0px, 100% 100%, 0px 93%)' },
+    { height: 420, z: 89, rotateY: -15, y: 0, clip: 'polygon(0px 7%, 100% 0px, 100% 100%, 0px 93%)' },
+    { height: 495, z: 135, rotateY: -15, y: 1, clip: 'polygon(0px 7%, 100% 0px, 100% 100%, 0px 93%)' },
+    { height: 580, z: 195, rotateY: 325, y: 0, clip: 'polygon(0px 8%, 100% 0px, 100% 100%, 0px 92%)' },
+    { height: 620, z: 240, rotateY: 312, y: 0, clip: 'polygon(0px 10%, 100% 0px, 100% 100%, 0px 90%)' }
+];
+
+const Featured3DSlider: React.FC = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const trackRef = useRef<HTMLDivElement>(null);
+    const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const cardInfoRef = useRef<HTMLDivElement>(null);
+    const closeBtnRef = useRef<HTMLButtonElement>(null);
+
+    const [cardOrder, setCardOrder] = useState<number[]>(products.map((_, i) => i));
+    const [expandedCard, setExpandedCard] = useState<{ index: number; data: typeof products[0] } | null>(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [isBlurred, setIsBlurred] = useState(false);
+    const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+    const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
+    const autoPlayDelay = 400; // 4 seconds between slides
+
+    const dragState = useRef({
+        startX: 0,
+        dragDistance: 0,
+        processedSteps: 0,
+        threshold: 60
+    });
+    const cloneRef = useRef<HTMLDivElement | null>(null);
+
+    // Apply initial positions
+    useEffect(() => {
+        cardRefs.current.forEach((card, index) => {
+            if (card) {
+                const pos = positions[index];
+                gsap.set(card, {
+                    height: pos.height,
+                    clipPath: pos.clip,
+                    transform: `translateZ(${pos.z}px) rotateY(${pos.rotateY}deg) translateY(${pos.y}px)`
+                });
+            }
+        });
+    }, [cardOrder]);
+
+    // Pause auto-play on hover
+    const handleMouseEnter = useCallback(() => {
+        setIsAutoPlaying(false);
+    }, []);
+
+    const handleMouseLeave = useCallback(() => {
+        if (!expandedCard) {
+            setIsAutoPlaying(true);
+        }
+    }, [expandedCard]);
+
+    const rotate = useCallback((direction: 'next' | 'prev') => {
+        if (expandedCard) return;
+
+        cardRefs.current.forEach((card, index) => {
+            if (!card) return;
+
+            let newIndex: number;
+            if (direction === 'next') {
+                newIndex = (index - 1 + products.length) % products.length;
+            } else {
+                newIndex = (index + 1) % products.length;
+            }
+
+            const pos = positions[newIndex];
+
+            gsap.set(card, { clipPath: pos.clip });
+            gsap.to(card, {
+                height: pos.height,
+                duration: 0.5,
+                ease: 'power2.out'
+            });
+            gsap.to(card, {
+                transform: `translateZ(${pos.z}px) rotateY(${pos.rotateY}deg) translateY(${pos.y}px)`,
+                duration: 0.5,
+                ease: 'power2.out'
+            });
+        });
+
+        setCardOrder(prev => {
+            const newOrder = [...prev];
+            if (direction === 'next') {
+                const first = newOrder.shift()!;
+                newOrder.push(first);
+            } else {
+                const last = newOrder.pop()!;
+                newOrder.unshift(last);
+            }
+            return newOrder;
+        });
+    }, [expandedCard]);
+
+    // Auto-slider functionality
+    useEffect(() => {
+        if (isAutoPlaying && !expandedCard && !isDragging) {
+            autoPlayRef.current = setInterval(() => {
+                rotate('next');
+            }, autoPlayDelay);
+        }
+
+        return () => {
+            if (autoPlayRef.current) {
+                clearInterval(autoPlayRef.current);
+                autoPlayRef.current = null;
+            }
+        };
+    }, [isAutoPlaying, expandedCard, isDragging, rotate]);
+
+    const expandCard = useCallback((cardElement: HTMLDivElement, productIndex: number) => {
+        if (expandedCard) return;
+
+        const product = products[productIndex];
+        setExpandedCard({ index: productIndex, data: product });
+
+        const rect = cardElement.getBoundingClientRect();
+        const clone = cardElement.cloneNode(true) as HTMLDivElement;
+        const overlay = clone.querySelector('.slider-3d-hover-overlay');
+        if (overlay) overlay.remove();
+
+        clone.style.position = 'fixed';
+        clone.style.left = `${rect.left}px`;
+        clone.style.top = `${rect.top}px`;
+        clone.style.width = `${rect.width}px`;
+        clone.style.height = `${rect.height}px`;
+        clone.style.margin = '0';
+        clone.style.zIndex = '1000';
+        clone.classList.add('slider-3d-clone');
+
+        document.body.appendChild(clone);
+        cloneRef.current = clone;
+
+        gsap.set(cardElement, { opacity: 0 });
+        setIsBlurred(true);
+
+        const maxHeight = window.innerHeight * 0.8;
+        const finalWidth = 500;
+        const finalHeight = Math.min(650, maxHeight);
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        gsap.to(clone, {
+            width: finalWidth,
+            height: finalHeight,
+            left: centerX - finalWidth / 2,
+            top: centerY - finalHeight / 2,
+            clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+            transform: 'translateZ(0) rotateY(0deg)',
+            duration: 0.8,
+            ease: 'power2.out'
+        });
+    }, [expandedCard]);
+
+    const closeCard = useCallback(() => {
+        if (!expandedCard || !cloneRef.current) return;
+
+        const cardElement = cardRefs.current[cardOrder.indexOf(expandedCard.index)];
+        const clone = cloneRef.current;
+
+        if (!cardElement) return;
+
+        const rect = cardElement.getBoundingClientRect();
+        const posIndex = cardOrder.indexOf(expandedCard.index);
+        const pos = positions[posIndex];
+
+        gsap.to(clone, {
+            width: rect.width,
+            height: rect.height,
+            left: rect.left,
+            top: rect.top,
+            clipPath: pos.clip,
+            duration: 0.8,
+            ease: 'power2.out',
+            onComplete: () => {
+                clone.remove();
+                gsap.set(cardElement, { opacity: 1 });
+                setIsBlurred(false);
+                setExpandedCard(null);
+                cloneRef.current = null;
+            }
+        });
+    }, [expandedCard, cardOrder]);
+
+    // Drag handlers
+    const handleDragStart = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+        if (expandedCard) return;
+
+        setIsDragging(true);
+        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        dragState.current = {
+            ...dragState.current,
+            startX: clientX,
+            dragDistance: 0,
+            processedSteps: 0
+        };
+    }, [expandedCard]);
+
+    const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
+        if (!isDragging) return;
+
+        e.preventDefault();
+        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        dragState.current.dragDistance = clientX - dragState.current.startX;
+
+        const steps = Math.floor(Math.abs(dragState.current.dragDistance) / dragState.current.threshold);
+
+        if (steps > dragState.current.processedSteps) {
+            const direction = dragState.current.dragDistance > 0 ? 'prev' : 'next';
+            rotate(direction);
+            dragState.current.processedSteps = steps;
+        }
+    }, [isDragging, rotate]);
+
+    const handleDragEnd = useCallback(() => {
+        setIsDragging(false);
+    }, []);
+
+    // Event listeners
+    useEffect(() => {
+        document.addEventListener('mousemove', handleDragMove);
+        document.addEventListener('touchmove', handleDragMove, { passive: false });
+        document.addEventListener('mouseup', handleDragEnd);
+        document.addEventListener('touchend', handleDragEnd);
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && expandedCard) {
+                closeCard();
+            } else if (e.key === 'ArrowLeft' && !expandedCard) {
+                rotate('prev');
+            } else if (e.key === 'ArrowRight' && !expandedCard) {
+                rotate('next');
+            }
+        };
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('mousemove', handleDragMove);
+            document.removeEventListener('touchmove', handleDragMove);
+            document.removeEventListener('mouseup', handleDragEnd);
+            document.removeEventListener('touchend', handleDragEnd);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [handleDragMove, handleDragEnd, rotate, closeCard, expandedCard]);
+
+    return (
+        <section className="slider-3d-section">
+            {/* Header */}
+            <div className="slider-3d-header">
+                <p className="slider-3d-subtitle">Handpicked for You</p>
+                <h2 className="slider-3d-title">Explore Our Featured Collection</h2>
+            </div>
+
+            {/* Slider Container */}
+            <div
+                ref={containerRef}
+                className={`slider-3d-container ${isDragging ? 'dragging' : ''}`}
+                onMouseDown={handleDragStart}
+                onTouchStart={handleDragStart}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
+                <div
+                    ref={trackRef}
+                    className={`slider-3d-track ${isBlurred ? 'blurred' : ''}`}
+                >
+                    {cardOrder.map((productIndex, visualIndex) => {
+                        const product = products[productIndex];
+                        return (
+                            <div
+                                key={product.id}
+                                ref={el => { cardRefs.current[visualIndex] = el; }}
+                                className={`slider-3d-card ${expandedCard?.index === productIndex ? 'expanded' : ''}`}
+                                data-title={product.title}
+                                data-desc={product.desc}
+                                onClick={() => {
+                                    const cardEl = cardRefs.current[visualIndex];
+                                    if (!isDragging && !expandedCard && cardEl) {
+                                        expandCard(cardEl, productIndex);
+                                    }
+                                }}
+                            >
+                                <img src={product.image} alt={product.title} />
+                                <div className="slider-3d-hover-overlay">
+                                    <span>Explore This Piece</span>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* Close Button */}
+            <button
+                ref={closeBtnRef}
+                className={`slider-3d-close-btn ${expandedCard ? 'visible' : ''}`}
+                onClick={closeCard}
+            >
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+                </svg>
+            </button>
+
+            {/* Card Info */}
+            <div
+                ref={cardInfoRef}
+                className={`slider-3d-card-info ${expandedCard ? 'visible' : ''}`}
+            >
+                <h2>{expandedCard?.data.title}</h2>
+                <p>{expandedCard?.data.desc}</p>
+                {expandedCard && (
+                    <Link
+                        href={`/products/${expandedCard.data.id}`}
+                        className="slider-3d-view-btn"
+                    >
+                        View Product →
+                    </Link>
+                )}
+            </div>
+        </section>
+    );
+};
+
+export default Featured3DSlider;
