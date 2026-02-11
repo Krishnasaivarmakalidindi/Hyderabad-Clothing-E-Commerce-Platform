@@ -61,7 +61,7 @@ export default function GlassProductCard({
             viewport={{ once: true }}
             transition={{ delay: index * 0.1, duration: 0.5 }}
             onMouseMove={handleMouseMove}
-            className="group glass-card spotlight-card relative overflow-hidden cursor-pointer"
+            className="group relative overflow-hidden cursor-pointer rounded-2xl bg-white dark:bg-[#1A1A1A] border border-cream-200 dark:border-gray-700/50 shadow-lg dark:shadow-black/30 hover:shadow-xl dark:hover:shadow-black/50 transition-all duration-300"
         >
             {/* Tag Badge */}
             {tag && (
@@ -122,7 +122,7 @@ export default function GlassProductCard({
                 {/* Gradient Overlay with Quick View */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
                     <Link
-                        href={`/product/${id}`}
+                        href={`/products/${id}`}
                         className="w-full bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-gray-900 dark:text-white font-semibold py-3 rounded-xl text-center hover:bg-vermilion hover:text-white transition-colors flex items-center justify-center gap-2 haptic-click"
                         aria-label={`View details for ${name}`}
                     >
@@ -133,15 +133,15 @@ export default function GlassProductCard({
             </div>
 
             {/* Product Info */}
-            <div className="p-6 relative z-10">
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1 uppercase tracking-wide">{category}</p>
-                <h3 className="font-serif text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-1 group-hover:text-gold transition-colors">
+            <div className="p-5 relative z-10 bg-white dark:bg-[#1A1A1A]">
+                <p className="text-xs text-brown-500 dark:text-gray-400 mb-1.5 uppercase tracking-wider font-semibold">{category}</p>
+                <h3 className="font-serif text-lg font-bold text-[#1F1F1F] dark:text-white mb-2 line-clamp-1 group-hover:text-gold transition-colors">
                     {name}
                 </h3>
                 <div className="flex items-center gap-2">
                     <span className="text-vermilion font-bold text-lg">{price}</span>
                     {originalPrice && (
-                        <span className="text-gray-400 line-through text-sm">{originalPrice}</span>
+                        <span className="text-brown-400 dark:text-gray-500 line-through text-sm">{originalPrice}</span>
                     )}
                 </div>
             </div>

@@ -90,7 +90,7 @@ const BENTO_ITEMS: BentoItem[] = [
 
 export default function BentoHeritageGrid() {
     return (
-        <section className="py-24 relative overflow-hidden" aria-labelledby="bento-heading">
+        <section className="py-24 relative overflow-hidden bg-pearl dark:bg-[#121212]" aria-labelledby="bento-heading">
             {/* Background texture */}
             <div className="texture-layer" />
             <div className="luxury-gradient absolute inset-0" />

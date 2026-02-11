@@ -37,8 +37,12 @@ export interface Product {
     isNewArrival: boolean;
     isFeatured: boolean;
 
-    // Images
+    // Images & Media
     images: string[];
+    videoUrl?: string;
+
+    // Display
+    tag?: string;
 }
 
 export type ProductCategory =
@@ -47,11 +51,12 @@ export type ProductCategory =
     | 'Lehengas'
     | 'Fabrics'
     | 'Mens Ethnic'
-    | 'Kids';
+    | 'Kids'
+    | 'Accessories';
 
-export type Size = 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'Free Size';
+export type Size = 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XS' | 'Free Size' | '38' | '40' | '42' | '44' | '46';
 
-export type FitType = 'Regular' | 'Slim' | 'Loose' | 'Flared';
+export type FitType = 'Regular' | 'Slim' | 'Loose' | 'Flared' | 'Semi-Fitted' | 'Custom' | 'Tailored';
 
 export type SortOption =
     | 'popular'
@@ -101,6 +106,7 @@ export const CATEGORY_CONFIG: Record<ProductCategory, { label: string; icon: str
     'Fabrics': { label: 'Fabrics', icon: '🧵' },
     'Mens Ethnic': { label: "Men's Ethnic", icon: '👔' },
     'Kids': { label: 'Kids', icon: '👶' },
+    'Accessories': { label: 'Accessories', icon: '👜' },
 };
 
 // Sort options configuration

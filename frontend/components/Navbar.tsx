@@ -7,7 +7,7 @@ import {
 } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import ThemeToggle from './ThemeToggle';
+import AnimatedThemeToggle from './AnimatedThemeToggle';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -87,7 +87,7 @@ const Navbar = () => {
                         <div className="flex items-center gap-2 md:gap-3">
                             {/* Theme Toggle */}
                             <div className="hidden md:flex items-center justify-center">
-                                <ThemeToggle />
+                                <AnimatedThemeToggle />
                             </div>
                             {/* Wishlist */}
                             <Link href="/wishlist" className="hidden md:flex items-center justify-center w-10 h-10 text-gray-400 hover:text-amber-400 hover:bg-white/5 rounded-xl transition-all duration-200 relative group">
@@ -250,7 +250,7 @@ const Navbar = () => {
                                 {/* Theme Toggle for Mobile */}
                                 <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
                                     <span className="text-gray-300 font-medium">Dark Mode</span>
-                                    <ThemeToggle />
+                                    <AnimatedThemeToggle />
                                 </div>
 
                                 <div className="h-px bg-gray-800 my-6"></div>

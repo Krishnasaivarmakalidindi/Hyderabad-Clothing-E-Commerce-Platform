@@ -12,16 +12,16 @@ import GlassProductCard from '../components/GlassProductCard';
 import BentoHeritageGrid from '../components/BentoHeritageGrid';
 import ScrollytellingOrigin from '../components/ScrollytellingOrigin';
 import MagazineNavigation from '../components/MagazineNavigation';
+import { FEATURED_PRODUCTS_HOME, products } from '../data/products';
 
-// Carousel Items
-const CAROUSEL_ITEMS = [
-    { id: '1', name: 'Royal Gadwal Silk Saree', category: 'SAREES', price: '₹9,850', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=600' },
-    { id: '2', name: 'White Chikankari Kurta', category: 'KURTAS', price: '₹3,850', image: 'https://images.unsplash.com/photo-1589156280159-27698a70f29e?q=80&w=600' },
-    { id: '3', name: 'Kids Pattu Pavadai', category: 'KIDS', price: '₹2,450', image: 'https://m.media-amazon.com/images/I/61FKajl2nEL._AC_UY1100_.jpg' },
-    { id: '4', name: 'Emerald Silk Saree', category: 'SAREES', price: '₹12,500', image: 'https://panachehautecouture.com/cdn/shop/products/d1747984115ddb883cc40f281a6bd8eb.jpeg?v=1571438576' },
-    { id: '5', name: 'Floral Summer Kurti', category: 'KURTIS', price: '₹1,850', image: 'https://i.pinimg.com/474x/ff/17/03/ff1703a20b20bb62cea2bb56a20906ee.jpg' },
-    { id: '6', name: 'Black Nehru Jacket', category: 'MENS', price: '₹4,500', image: 'https://www.nicobar.com/cdn/shop/files/NBI030558_1.jpg?v=1696738242' }
-];
+// Carousel Items - using unified product data
+const CAROUSEL_ITEMS = products.slice(0, 6).map(p => ({
+    id: String(p.id),
+    name: p.name,
+    category: p.category.toUpperCase(),
+    price: `₹${p.price.toLocaleString()}`,
+    image: p.images[0]
+}));
 
 // Custom SVG Icons for Feature Grid
 const LoomIcon = () => (
@@ -60,49 +60,8 @@ const ReturnsIcon = () => (
     </svg>
 );
 
-// Featured Products with video URLs
-const FEATURED_PRODUCTS = [
-    {
-        id: '1',
-        name: 'Royal Gadwal Silk Saree',
-        price: '₹9,850',
-        originalPrice: '₹12,500',
-        category: 'Sarees',
-        image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=600',
-        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-woman-in-traditional-indian-dress-4428-large.mp4',
-        tag: 'Best Seller'
-    },
-    {
-        id: '2',
-        name: 'Ikat Handloom Saree',
-        price: '₹7,850',
-        originalPrice: '₹9,500',
-        category: 'Sarees',
-        image: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?q=80&w=600',
-        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-fabric-with-colorful-patterns-waving-in-the-wind-42541-large.mp4',
-        tag: 'Handcrafted'
-    },
-    {
-        id: '3',
-        name: 'Zardozi Bridal Lehenga',
-        price: '₹45,000',
-        originalPrice: '₹55,000',
-        category: 'Lehengas',
-        image: 'https://images.unsplash.com/photo-1632766329767-f3d2f97c8386?q=80&w=600',
-        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-hands-sewing-a-blue-cloth-in-a-factory-21251-large.mp4',
-        tag: 'Bridal Collection'
-    },
-    {
-        id: '4',
-        name: 'Chikankari Kurta Set',
-        price: '₹3,850',
-        originalPrice: '₹4,500',
-        category: 'Kurtas',
-        image: 'https://images.unsplash.com/photo-1589156280159-27698a70f29e?q=80&w=600',
-        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-woman-wearing-traditional-indian-clothes-4427-large.mp4',
-        tag: 'New Arrival'
-    }
-];
+// Featured Products - using unified data from products.ts
+const FEATURED_PRODUCTS = FEATURED_PRODUCTS_HOME;
 
 // Stats data
 const STATS = [
@@ -241,14 +200,14 @@ export default function Home() {
                             <p className="text-gold font-semibold tracking-[0.2em] uppercase text-sm mb-4">
                                 Curated by Master Artisans
                             </p>
-                            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
-                                Heritage<br />
-                                <span className="text-vermilion italic">Reimagined</span>
+                            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
+                                <span className="text-gold dark:text-gold">Heritage</span><br />
+                                <span className="reimagined-text italic">Reimagined</span>
                             </h1>
-                            <p className="font-serif text-xl md:text-2xl text-gold mb-4">
+                            <p className="font-serif text-xl md:text-2xl text-vermilion mb-4">
                                 Hyderabad's Finest Silks, Now Online
                             </p>
-                            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-md mb-8">
+                            <p className="text-lg text-[#4A4A4A] dark:text-gray-300 max-w-md mb-8">
                                 Curated by master artisans for your most cherished moments.
                             </p>
 
@@ -271,12 +230,19 @@ export default function Home() {
                                 </Link>
                             </div>
 
-                            {/* Dots */}
-                            <div className="flex gap-2 mt-8">
-                                {CAROUSEL_ITEMS.map((_, i) => (
+                            {/* Color Dots - Smaller with variety */}
+                            <div className="flex gap-3 mt-8">
+                                {[
+                                    { color: 'bg-gold', ring: 'ring-gold/50' },
+                                    { color: 'bg-[#C9A962]', ring: 'ring-[#C9A962]/50' },
+                                    { color: 'bg-vermilion', ring: 'ring-vermilion/50' },
+                                    { color: 'bg-[#E8D4A0]', ring: 'ring-[#E8D4A0]/50' },
+                                    { color: 'bg-[#8B7355]', ring: 'ring-[#8B7355]/50' },
+                                    { color: 'bg-[#D4B896]', ring: 'ring-[#D4B896]/50' }
+                                ].map((dot, i) => (
                                     <button
                                         key={i}
-                                        className={`w-3 h-3 rounded-full transition-all ${i === activeIndex ? 'bg-gold scale-125' : 'bg-gold/30 hover:bg-gold/50'}`}
+                                        className={`w-6 h-6 rounded-full transition-all duration-300 ${dot.color} ${i === activeIndex ? `ring-2 ${dot.ring} ring-offset-2 scale-110` : 'opacity-70 hover:opacity-100 hover:scale-105'}`}
                                         onClick={() => updateCarousel(i)}
                                         aria-label={`Go to slide ${i + 1}`}
                                     />
@@ -288,6 +254,27 @@ export default function Home() {
             </header>
 
             <style jsx>{`
+                /* Reimagined text color animation */
+                .reimagined-text {
+                    background: linear-gradient(
+                        90deg,
+                        #E34234,
+                        #B59410,
+                        #008080,
+                        #E34234
+                    );
+                    background-size: 300% 100%;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    animation: colorShift 6s ease-in-out infinite;
+                }
+
+                @keyframes colorShift {
+                    0%, 100% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                }
+
                 .carousel-container {
                     width: 100%;
                     max-width: 400px;
@@ -487,7 +474,7 @@ export default function Home() {
             </section>
 
             {/* Featured Products - Pearl Background with Glass Cards */}
-            <section className="py-24 bg-gradient-to-b from-pearl to-pearl-200 relative" aria-labelledby="products-heading">
+            <section className="py-24 bg-gradient-to-b from-pearl to-pearl-200 dark:from-[#121212] dark:to-[#1A1A1A] relative" aria-labelledby="products-heading">
                 <div className="texture-layer" />
                 <div className="container mx-auto px-4 md:px-8 relative z-10">
                     <header className="text-center max-w-3xl mx-auto mb-16">
@@ -495,10 +482,10 @@ export default function Home() {
                             Curated Excellence
                         </p>
                         <h2 id="products-heading" className="font-serif text-4xl md:text-5xl font-bold mb-6">
-                            <span className="text-gray-900 dark:text-white">Featured </span>
+                            <span className="text-[#1F1F1F] dark:text-white">Featured </span>
                             <span className="gold-shimmer">Collection</span>
                         </h2>
-                        <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+                        <p className="text-xl text-[#4A4A4A] dark:text-gray-300 leading-relaxed">
                             Hover to see our fabrics come alive. Each piece tells a story of heritage.
                         </p>
                     </header>

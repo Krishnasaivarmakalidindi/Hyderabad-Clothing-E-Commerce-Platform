@@ -1,76 +1,15 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import Link from 'next/link';
+import { products as allProducts } from '../data/products';
 
-// Product data for Hyderabad Clothing
-const products = [
-    {
-        id: '1',
-        image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&h=800&fit=crop',
-        title: 'Royal Gadwal Saree',
-        desc: 'Handwoven silk masterpiece with pure zari work, showcasing centuries-old weaving traditions of Telangana.'
-    },
-    {
-        id: '2',
-        image: 'https://houseofelegance.in/cdn/shop/products/IkatSilkSaree1.webp?v=1674305111',
-        title: 'Pochampally Ikat',
-        desc: 'Geometric perfection in every thread. UNESCO-recognized craft featuring traditional tie-dye weaving.'
-    },
-    {
-        id: '3',
-        image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=800&fit=crop',
-        title: 'Banarasi Silk Kurta',
-        desc: 'Premium silk kurta with intricate gold thread embroidery, perfect for weddings and festive occasions.'
-    },
-    {
-        id: '4',
-        image: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?w=600&h=800&fit=crop',
-        title: 'Mangalagiri Cotton',
-        desc: 'Lightweight handloom cotton with distinctive nizam border, ideal for the Hyderabad climate.'
-    },
-    {
-        id: '5',
-        image: 'https://images.unsplash.com/photo-1558171813-4c088753af8f?w=600&h=800&fit=crop',
-        title: 'Kalamkari Dupatta',
-        desc: 'Hand-painted artistry depicting mythological tales using natural vegetable dyes.'
-    },
-    {
-        id: '6',
-        image: 'https://5.imimg.com/data5/NE/TT/MY-2412209/wedding-special-grooms-sherwani-wholesale-collection.jpg',
-        title: 'Sherwani Collection',
-        desc: 'Regal menswear featuring Hyderabadi craftsmanship with pearl and zardozi embellishments.'
-    },
-    {
-        id: '7',
-        image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600&h=800&fit=crop',
-        title: 'Narayanpet Saree',
-        desc: 'Traditional cotton saree with temple-inspired borders and rich cultural heritage.'
-    },
-    {
-        id: '8',
-        image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&h=800&fit=crop',
-        title: 'Khadi Kurta Set',
-        desc: 'Sustainable handspun fabric celebrating India\'s freedom movement and artisan heritage.'
-    },
-    {
-        id: '9',
-        image: 'https://assets0.mirraw.com/images/13447633/image_original_zoom.jpeg?1754024412',
-        title: 'Banjara Embroidery',
-        desc: 'Vibrant mirror work and colorful threads showcasing nomadic tribal artistry.'
-    },
-    {
-        id: '10',
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVhPBAvwT77c5nXhk_LPXxCsbtHggjUYJiNw&s',
-        title: 'Dharmavaram Silk',
-        desc: 'Pure mulberry silk with contrast borders, a bridal favorite from Andhra Pradesh.'
-    },
-    {
-        id: '11',
-        image: 'https://images.unsplash.com/photo-1571513722275-4b41940f54b8?w=600&h=800&fit=crop',
-        title: 'Designer Lehenga',
-        desc: 'Contemporary fusion of traditional motifs with modern silhouettes for the new-age bride.'
-    }
-];
+// Product data for 3D Slider - derived from unified product data
+const products = allProducts.slice(0, 11).map(p => ({
+    id: String(p.id),
+    image: p.images[0],
+    title: p.name,
+    desc: (p.description || '').slice(0, 100) + '...'
+}));
 
 // Position configurations for 3D effect
 const positions = [
