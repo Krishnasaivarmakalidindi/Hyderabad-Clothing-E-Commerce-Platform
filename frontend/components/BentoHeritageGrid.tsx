@@ -26,7 +26,7 @@ const BENTO_ITEMS: BentoItem[] = [
         description: 'Discover our latest collection of handwoven silks',
         image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=800',
         link: '/collections?category=new',
-        gridClass: 'bento-item-large'
+        gridClass: ''
     },
     {
         id: '2',
@@ -35,7 +35,7 @@ const BENTO_ITEMS: BentoItem[] = [
         subtitle: 'Behind the Scenes',
         videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-hands-sewing-a-blue-cloth-in-a-factory-21251-large.mp4',
         image: 'https://images.unsplash.com/photo-1558171813-4c088753af8f?q=80&w=600',
-        gridClass: 'bento-item-tall'
+        gridClass: ''
     },
     {
         id: '3',
@@ -68,7 +68,7 @@ const BENTO_ITEMS: BentoItem[] = [
         description: 'Book your private consultation',
         image: 'https://images.unsplash.com/photo-1632766329767-f3d2f97c8386?q=80&w=600',
         link: '/collections?category=bridal',
-        gridClass: 'bento-item-wide'
+        gridClass: ''
     },
     {
         id: '7',
@@ -142,7 +142,7 @@ export default function BentoHeritageGrid() {
 }
 
 function BentoCard({ item, index }: { item: BentoItem; index: number }) {
-    const baseClasses = "glass-card spotlight-card relative overflow-hidden group cursor-pointer";
+    const baseClasses = "glass-card spotlight-card relative overflow-hidden group cursor-pointer h-full";
     const delayedAnimation = { delay: index * 0.1, duration: 0.5 };
 
     if (item.type === 'stat') {
@@ -174,7 +174,7 @@ function BentoCard({ item, index }: { item: BentoItem; index: number }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={delayedAnimation}
-                className={`${baseClasses} ${item.gridClass} min-h-[400px]`}
+                className={`${baseClasses} ${item.gridClass} min-h-[200px]`}
             >
                 {/* Background Image */}
                 <div
@@ -223,13 +223,13 @@ function BentoCard({ item, index }: { item: BentoItem; index: number }) {
 
     if (item.type === 'featured' || item.type === 'cta') {
         return (
-            <Link href={item.link || '#'}>
+            <Link href={item.link || '#'} className="h-full">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={delayedAnimation}
-                    className={`${baseClasses} ${item.gridClass} min-h-[400px]`}
+                    className={`${baseClasses} ${item.gridClass} min-h-[200px]`}
                 >
                     {/* Background Image */}
                     <div
@@ -263,7 +263,7 @@ function BentoCard({ item, index }: { item: BentoItem; index: number }) {
 
     // Story type
     return (
-        <Link href={item.link || '#'}>
+        <Link href={item.link || '#'} className="h-full">
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}

@@ -39,7 +39,7 @@ const Featured3DSlider: React.FC = () => {
     const [isBlurred, setIsBlurred] = useState(false);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
     const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
-    const autoPlayDelay = 400; // 4 seconds between slides
+    const autoPlayDelay = 4000; // 4 seconds between slides
 
     const dragState = useRef({
         startX: 0,
@@ -57,7 +57,8 @@ const Featured3DSlider: React.FC = () => {
                 gsap.set(card, {
                     height: pos.height,
                     clipPath: pos.clip,
-                    transform: `translateZ(${pos.z}px) rotateY(${pos.rotateY}deg) translateY(${pos.y}px)`
+                    transform: `translateZ(${pos.z}px) rotateY(${pos.rotateY}deg) translateY(${pos.y}px)`,
+                    willChange: 'transform, height, clip-path'
                 });
             }
         });
@@ -89,16 +90,13 @@ const Featured3DSlider: React.FC = () => {
 
             const pos = positions[newIndex];
 
-            gsap.set(card, { clipPath: pos.clip });
             gsap.to(card, {
                 height: pos.height,
-                duration: 0.5,
-                ease: 'power2.out'
-            });
-            gsap.to(card, {
+                clipPath: pos.clip,
                 transform: `translateZ(${pos.z}px) rotateY(${pos.rotateY}deg) translateY(${pos.y}px)`,
-                duration: 0.5,
-                ease: 'power2.out'
+                duration: 1,
+                ease: 'power3.inOut',
+                overwrite: 'auto'
             });
         });
 
@@ -170,8 +168,8 @@ const Featured3DSlider: React.FC = () => {
             top: centerY - finalHeight / 2,
             clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
             transform: 'translateZ(0) rotateY(0deg)',
-            duration: 0.8,
-            ease: 'power2.out'
+            duration: 0.9,
+            ease: 'power3.inOut'
         });
     }, [expandedCard]);
 
@@ -193,8 +191,8 @@ const Featured3DSlider: React.FC = () => {
             left: rect.left,
             top: rect.top,
             clipPath: pos.clip,
-            duration: 0.8,
-            ease: 'power2.out',
+            duration: 0.9,
+            ease: 'power3.inOut',
             onComplete: () => {
                 clone.remove();
                 gsap.set(cardElement, { opacity: 1 });
