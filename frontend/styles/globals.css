@@ -672,8 +672,6 @@ body {
     width: 100%;
     max-width: 1400px;
     overflow: hidden;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
 }
 
 .slider-3d-container.dragging {
@@ -698,9 +696,6 @@ body {
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.3s ease;
-    will-change: transform, height, clip-path;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
 }
 
 .slider-3d-card::before {
